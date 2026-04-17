@@ -11,7 +11,7 @@
         font-family: Arial, sans-serif;
     }
 
-    /* ZURÜCK-BUTTON */
+    /* ZURÜCK-BUTTON LINKS OBEN */
     #backBtn {
         position: fixed;
         top: 10px;
@@ -27,6 +27,7 @@
         font-size: 18px;
     }
 
+    /* TOOLBAR RECHTS */
     #toolbar {
         position: fixed;
         top: 10px;
@@ -121,10 +122,10 @@
 
 <body>
 
-<!-- ZURÜCK-BUTTON -->
+<!-- ZURÜCK-BUTTON LINKS -->
 <a id="backBtn" href="index.html">⬅</a>
 
-<!-- Toolbar -->
+<!-- TOOLBAR RECHTS -->
 <div id="toolbar">
     <strong>Farbe & Größe</strong><br>
     <input type="color" id="colorPicker" value="#ff0000"><br><br>
@@ -154,14 +155,14 @@
     🎨 Gratis Mal‑App – bald verfügbar
 </div>
 
-<!-- Galerie Popup -->
+<!-- GALERIE POPUP MIT BEISPIELBILDERN -->
 <div id="galleryPopup">
     <h3>Vorlagen auswählen</h3>
 
-    <!-- HIER KOMMEN DEINE BILDER HIN -->
-    <img src="vorlage1.png" class="gallery-img" data-template="1">
-    <img src="vorlage2.png" class="gallery-img" data-template="2">
-    <img src="vorlage3.png" class="gallery-img" data-template="3">
+    <!-- Beispielbilder (Platzhalter) -->
+    <img src="https://placehold.co/300x300?text=Kuh" class="gallery-img" data-template="kuh">
+    <img src="https://placehold.co/300x300?text=Traktor" class="gallery-img" data-template="traktor">
+    <img src="https://placehold.co/300x300?text=Haus" class="gallery-img" data-template="haus">
 
     <div id="closeGallery">Schließen</div>
 </div>
@@ -244,7 +245,7 @@ function end() {
 }
 
 function getPos(e) {
-    const rect = c.getBoundingClientClientRect();
+    const rect = c.getBoundingClientRect();
     return {
         x: (e.clientX || e.pageX) - rect.left,
         y: (e.clientY || e.pageY) - rect.top
@@ -332,12 +333,12 @@ document.getElementById("closeGallery").addEventListener("click", () => {
 
 document.querySelectorAll(".gallery-img").forEach(img => {
     img.addEventListener("click", () => {
-        const id = img.dataset.template;
+        const src = img.src;
 
         ctx.clearRect(0, 0, c.width, c.height);
 
         const template = new Image();
-        template.src = "vorlage" + id + ".png";
+        template.src = src;
 
         template.onload = () => {
             const scale = Math.min(c.width / template.width, c.height / template.height);
