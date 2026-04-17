@@ -11,6 +11,26 @@
         font-family: Arial, sans-serif;
     }
 
+    /* ZURÜCK-BUTTON */
+    #backBtn {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background: #FFD86B;
+        padding: 10px 16px;
+        border-radius: 10px;
+        color: #333;
+        font-weight: bold;
+        text-decoration: none;
+        box-shadow: 0 0 8px rgba(0,0,0,0.3);
+        z-index: 9999;
+        font-size: 20px;
+    }
+
+    #backBtn:hover {
+        transform: scale(1.05);
+    }
+
     #toolbar {
         position: fixed;
         top: 10px;
@@ -50,7 +70,7 @@
         z-index: 20;
     }
 
-    /* Gratis App Button (noch ohne Link) */
+    /* Gratis App Button */
     #appBtn {
         position: fixed;
         bottom: 20px;
@@ -68,6 +88,9 @@
 </head>
 
 <body>
+
+<!-- ZURÜCK-BUTTON -->
+<a id="backBtn" href="index.html">⬅ Zurück</a>
 
 <!-- Toolbar -->
 <div id="toolbar">
@@ -94,7 +117,7 @@
     🐄 Bauernhof‑Ausmalbuch im Etsy‑Shop
 </a>
 
-<!-- Gratis App Button (noch ohne Link) -->
+<!-- Gratis App Button -->
 <div id="appBtn">
     🎨 Gratis Mal‑App – bald verfügbar
 </div>
@@ -311,3 +334,4 @@ c.addEventListener("touchmove", (e) => {
 
 </body>
 </html>
+
