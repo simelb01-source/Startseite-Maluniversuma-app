@@ -15,26 +15,22 @@
     #backBtn {
         position: fixed;
         top: 10px;
-        right: 10px;
+        left: 10px;
         background: #FFD86B;
-        padding: 10px 16px;
-        border-radius: 10px;
+        padding: 8px 14px;
+        border-radius: 8px;
         color: #333;
         font-weight: bold;
         text-decoration: none;
-        box-shadow: 0 0 8px rgba(0,0,0,0.3);
+        box-shadow: 0 0 6px rgba(0,0,0,0.25);
         z-index: 9999;
-        font-size: 20px;
-    }
-
-    #backBtn:hover {
-        transform: scale(1.05);
+        font-size: 18px;
     }
 
     #toolbar {
         position: fixed;
         top: 10px;
-        left: 10px;
+        right: 10px;
         background: rgba(255,255,255,0.95);
         padding: 12px;
         border-radius: 10px;
@@ -84,13 +80,49 @@
         box-shadow: 0 0 8px rgba(0,0,0,0.3);
         z-index: 20;
     }
+
+    /* GALERIE POPUP */
+    #galleryPopup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 12px rgba(0,0,0,0.3);
+        z-index: 9998;
+        display: none;
+        width: 90%;
+        max-width: 350px;
+        text-align: center;
+    }
+
+    .gallery-img {
+        width: 80px;
+        height: 80px;
+        margin: 6px;
+        border: 2px solid #ccc;
+        border-radius: 6px;
+        cursor: pointer;
+        object-fit: cover;
+    }
+
+    #closeGallery {
+        margin-top: 10px;
+        padding: 6px 12px;
+        background: #FFD86B;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+    }
 </style>
 </head>
 
 <body>
 
 <!-- ZURÜCK-BUTTON -->
-<a id="backBtn" href="index.html">⬅ Zurück</a>
+<a id="backBtn" href="index.html">⬅</a>
 
 <!-- Toolbar -->
 <div id="toolbar">
@@ -105,7 +137,7 @@
     <button id="sprayBtn">Sprühdose</button><br>
 
     <strong>Vorlagen</strong><br>
-    <button id="templateBtn">Ausmal‑Vorlage</button><br>
+    <button id="templateBtn">Vorlagen</button><br>
 
     <strong>Aktionen</strong><br>
     <button id="clearBtn">Löschen</button>
@@ -120,6 +152,18 @@
 <!-- Gratis App Button -->
 <div id="appBtn">
     🎨 Gratis Mal‑App – bald verfügbar
+</div>
+
+<!-- Galerie Popup -->
+<div id="galleryPopup">
+    <h3>Vorlagen auswählen</h3>
+
+    <!-- HIER KOMMEN DEINE BILDER HIN -->
+    <img src="vorlage1.png" class="gallery-img" data-template="1">
+    <img src="vorlage2.png" class="gallery-img" data-template="2">
+    <img src="vorlage3.png" class="gallery-img" data-template="3">
+
+    <div id="closeGallery">Schließen</div>
 </div>
 
 <canvas id="c"></canvas>
@@ -139,7 +183,7 @@ window.addEventListener("resize", resizeCanvas);
 let painting = false;
 let currentColor = "#ff0000";
 let currentSize = 5;
-let tool = "pencil"; // pencil, eraser, rainbow, spray
+let tool = "pencil";
 let rainbowHue = 0;
 
 // Toolbar Events
@@ -152,71 +196,17 @@ document.getElementById("sizeSlider").addEventListener("input", e => {
     currentSize = e.target.value;
 });
 
-document.getElementById("pencilBtn").addEventListener("click", () => {
-    tool = "pencil";
-});
-
-document.getElementById("eraserBtn").addEventListener("click", () => {
-    tool = "eraser";
-});
-
-document.getElementById("rainbowBtn").addEventListener("click", () => {
-    tool = "rainbow";
-});
-
-document.getElementById("sprayBtn").addEventListener("click", () => {
-    tool = "spray";
-});
+document.getElementById("pencilBtn").addEventListener("click", () => tool = "pencil");
+document.getElementById("eraserBtn").addEventListener("click", () => tool = "eraser");
+document.getElementById("rainbowBtn").addEventListener("click", () => tool = "rainbow");
+document.getElementById("sprayBtn").addEventListener("click", () => tool = "spray");
 
 document.getElementById("clearBtn").addEventListener("click", () => {
     ctx.clearRect(0, 0, c.width, c.height);
 });
 
-document.getElementById("templateBtn").addEventListener("click", () => {
-    ctx.clearRect(0, 0, c.width, c.height);
-    ctx.save();
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 3;
-    ctx.lineCap = "round";
-
-    const cx = c.width / 2;
-    const cy = c.height / 2;
-    const w = 300;
-    const h = 200;
-
-    ctx.strokeRect(cx - w/2, cy - h/2, w, h);
-
-    ctx.beginPath();
-    ctx.moveTo(cx - w/2, cy - h/2);
-    ctx.lineTo(cx, cy - h/2 - 150);
-    ctx.lineTo(cx + w/2, cy - h/2);
-    ctx.closePath();
-    ctx.stroke();
-
-    ctx.strokeRect(cx - 40, cy + h/2 - 100, 80, 100);
-
-    ctx.strokeRect(cx - w/2 + 30, cy - h/2 + 30, 60, 60);
-    ctx.strokeRect(cx + w/2 - 90, cy - h/2 + 30, 60, 60);
-
-    const sx = cx + w/2 + 120;
-    const sy = cy - h/2 - 120;
-    ctx.beginPath();
-    ctx.arc(sx, sy, 40, 0, Math.PI * 2);
-    ctx.stroke();
-    for (let i = 0; i < 12; i++) {
-        const angle = (Math.PI * 2 / 12) * i;
-        ctx.beginPath();
-        ctx.moveTo(sx + Math.cos(angle) * 50, sy + Math.sin(angle) * 50);
-        ctx.lineTo(sx + Math.cos(angle) * 80, sy + Math.sin(angle) * 80);
-        ctx.stroke();
-    }
-
-    ctx.restore();
-});
-
-// SPEICHERN MIT WEISSEM HINTERGRUND + BRANDING
+// SPEICHERN
 document.getElementById("saveBtn").addEventListener("click", () => {
-
     const exportCanvas = document.createElement("canvas");
     const exportCtx = exportCanvas.getContext("2d");
 
@@ -254,7 +244,7 @@ function end() {
 }
 
 function getPos(e) {
-    const rect = c.getBoundingClientRect();
+    const rect = c.getBoundingClientClientRect();
     return {
         x: (e.clientX || e.pageX) - rect.left,
         y: (e.clientY || e.pageY) - rect.top
@@ -311,28 +301,58 @@ c.addEventListener("mouseleave", end);
 c.addEventListener("mousemove", draw);
 
 // Touch
-c.addEventListener("touchstart", (e) => {
+c.addEventListener("touchstart", e => {
     e.preventDefault();
     start(e.touches[0]);
 });
 
-c.addEventListener("touchend", (e) => {
+c.addEventListener("touchend", e => {
     e.preventDefault();
     end();
 });
 
-c.addEventListener("touchcancel", (e) => {
+c.addEventListener("touchcancel", e => {
     e.preventDefault();
     end();
 });
 
-c.addEventListener("touchmove", (e) => {
+c.addEventListener("touchmove", e => {
     e.preventDefault();
     draw(e.touches[0]);
+});
+
+// GALERIE
+document.getElementById("templateBtn").addEventListener("click", () => {
+    document.getElementById("galleryPopup").style.display = "block";
+});
+
+document.getElementById("closeGallery").addEventListener("click", () => {
+    document.getElementById("galleryPopup").style.display = "none";
+});
+
+document.querySelectorAll(".gallery-img").forEach(img => {
+    img.addEventListener("click", () => {
+        const id = img.dataset.template;
+
+        ctx.clearRect(0, 0, c.width, c.height);
+
+        const template = new Image();
+        template.src = "vorlage" + id + ".png";
+
+        template.onload = () => {
+            const scale = Math.min(c.width / template.width, c.height / template.height);
+            const w = template.width * scale;
+            const h = template.height * scale;
+            const x = (c.width - w) / 2;
+            const y = (c.height - h) / 2;
+
+            ctx.drawImage(template, x, y, w, h);
+        };
+
+        document.getElementById("galleryPopup").style.display = "none";
+    });
 });
 </script>
 
 </body>
 </html>
-
-
