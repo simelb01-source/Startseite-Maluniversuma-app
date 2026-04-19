@@ -47,6 +47,18 @@
         button:hover {
             background: #eee;
         }
+
+        #etsyBtn {
+            background: #ff8c00;
+            color: white;
+            font-weight: bold;
+        }
+
+        #downloadInfoBtn {
+            background: #4caf50;
+            color: white;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -69,10 +81,13 @@
 
         <button id="clearBtn">Leeren</button>
         <button id="saveBtn">Als Bild speichern</button>
+
+        <button id="etsyBtn">🛒 Etsy-Shop</button>
+        <button id="downloadInfoBtn">📥 App bald downloadbar</button>
     </div>
 
     <div id="canvasWrapper">
-        <canvas id="drawCanvas" width="800" height="500"></canvas>
+        <canvas id="drawCanvas" width="1200" height="700"></canvas>
     </div>
 
     <script>
@@ -88,6 +103,9 @@
         const brushBtn = document.getElementById("brushBtn");
         const sprayBtn = document.getElementById("sprayBtn");
         const rainbowBtn = document.getElementById("rainbowBtn");
+
+        const etsyBtn = document.getElementById("etsyBtn");
+        const downloadInfoBtn = document.getElementById("downloadInfoBtn");
 
         let drawing = false;
         let lastX = 0;
@@ -109,6 +127,14 @@
         brushBtn.addEventListener("click", () => tool = "brush");
         sprayBtn.addEventListener("click", () => tool = "spray");
         rainbowBtn.addEventListener("click", () => tool = "rainbow");
+
+        etsyBtn.addEventListener("click", () => {
+            window.open("https://www.etsy.com/shop/maluniversum", "_blank");
+        });
+
+        downloadInfoBtn.addEventListener("click", () => {
+            alert("Hier kannst du bald die Maluniversum-App herunterladen!");
+        });
 
         function getPos(evt) {
             const rect = canvas.getBoundingClientRect();
